@@ -8,7 +8,8 @@ namespace RaceTracker
 {
     internal class Racer
     {
-        private string Name { get; set; }
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
         private string Birthday { get; set; }
         private RaceGroup RacerGroup { get; set; }
         private int BIB { get; set; }
@@ -17,10 +18,10 @@ namespace RaceTracker
         List<Observer> Subscribers = new List<Observer>();
         private int position { get; set; }
 
-        public Racer(string name, string birthday, RaceGroup raceGroup, int bib, int finish = -1)
+        public Racer(string firstname, string lastname, int bib, RaceGroup raceGroup, int finish = -1)
         {
-            Name = name;
-            Birthday = birthday;
+            FirstName = firstname;
+            LastName = lastname;
             RacerGroup = raceGroup;
             BIB = bib;
             StartTime = -1; //TODO Based on race group start
