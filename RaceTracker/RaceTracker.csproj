@@ -63,6 +63,10 @@
     <Compile Include="Racer.cs" />
     <Compile Include="Spectator.cs" />
     <Compile Include="Support.cs" />
+    <Compile Include="Tracker.cs" />
+    <EmbeddedResource Include="MainMenu.resx">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

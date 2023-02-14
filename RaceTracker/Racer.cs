@@ -10,13 +10,14 @@ namespace RaceTracker
     {
         private string FirstName { get; set; }
         private string LastName { get; set; }
-        private string Birthday { get; set; }
+        //private string Birthday { get; set; }
         private RaceGroup RacerGroup { get; set; }
         private int BIB { get; set; }
         private int FinishTime { get; set; }
         private int StartTime { get; set; }
         List<Observer> Subscribers = new List<Observer>();
-        private int position { get; set; }
+        private int Position { get; set; }
+        private int CurrentTime { get; set; }
 
         public Racer(string firstname, string lastname, int bib, RaceGroup raceGroup, int finish = -1)
         {
@@ -24,12 +25,14 @@ namespace RaceTracker
             LastName = lastname;
             RacerGroup = raceGroup;
             BIB = bib;
-            StartTime = -1; //TODO Based on race group start
+            StartTime = RacerGroup.BlockStartTime;
 
         }
 
-        public void Update()
+        public void Update(int position, int time)
         {
+            Position = position;
+            CurrentTime = time;
             // TODO Take in things that update and send it to observers
             // Send info every 5 minutes or major position changes +- 3 positions, or when they enter 1st or 2nd of their block
             // Staff can change email message 

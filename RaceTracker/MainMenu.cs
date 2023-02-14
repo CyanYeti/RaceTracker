@@ -12,9 +12,11 @@ namespace RaceTracker
 {
     public partial class MainMenu : Form
     {
+        private Tracker Rtracker { get; set; }
         public MainMenu()
         {
             InitializeComponent();
         }
+
     }
 }

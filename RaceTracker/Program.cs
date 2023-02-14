@@ -12,31 +12,17 @@ namespace RaceTracker
         [STAThread]
         static void Main()
         {
+            Tracker Rtracker = new Tracker();
+
             Thread uiThread = new Thread (new ThreadStart (LaunchDisplay));
             uiThread.Start();
             // This dummy server receives RacerStatus Messages from the simulator
-            // and simply prints them to the screen
             
 
-            DataReceiver receiver = new DataReceiver();
+
+            // Passing the data storage class Tracker by reference
+            DataReceiver receiver = new DataReceiver(ref Rtracker);
             receiver.Start();
-
-            List<List<string>> groupsData = CSVParser.ParseCSV("Groups.csv");
-
-            // Group ID is the groups key
-            Dictionary<int, RaceGroup> groups = new Dictionary<int, RaceGroup>();
-            foreach(List<string> group in groupsData)
-            {
-                groups.Add(Convert.ToInt32(group[0]), new RaceGroup(Convert.ToInt32(group[0]), group[1], Convert.ToInt32(group[2]), Convert.ToInt32(group[3]), Convert.ToInt32(group[4])));
-            }
-
-            List<List<string>> racersData = CSVParser.ParseCSV("Racers.csv");
-            // BIB number is the racer key
-            Dictionary<int, Racer> racers = new Dictionary<int, Racer>();
-            foreach(List<string> racer in racersData)
-            {
-                racers.Add(Convert.ToInt32(racer[2]), new Racer(racer[0], racer[1], Convert.ToInt32(racer[2]), groups[Convert.ToInt32(racer[3]) - 1]));
-            }
 
             // For now just read a line from the console 
             //string tmp = Console.ReadLine();
@@ -52,6 +38,7 @@ namespace RaceTracker
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainMenu());
         }
+
     }
 }
 
@@ -66,10 +53,6 @@ namespace RaceTracker
  * 
  * Multithread?
  * 
- * 
  * Test
  * UML
- * 
- * 
- * 
  */

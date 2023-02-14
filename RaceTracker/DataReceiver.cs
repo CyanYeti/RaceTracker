@@ -16,6 +16,11 @@ namespace RaceTracker
         private bool keepGoing;
         private Thread myRunThread;
 
+        private Tracker Rtracker;
+        internal DataReceiver(ref Tracker tracker)
+        {
+            Rtracker = tracker;
+        }
         public void Start()
         {
             udpClient = new UdpClient(14000);
@@ -48,10 +53,8 @@ namespace RaceTracker
                                         statusMessage.RacerBibNumber,
                                         statusMessage.SensorId,
                                         statusMessage.Timestamp);
-
-
-                            // A non-dummy server would do something intelligent with the message,
-                            // like lookup the racer and update the last sensor and time
+                            Rtracker.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
+                            // Position represents the sensor
                         }
                     }
                 }
