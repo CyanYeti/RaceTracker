@@ -45,5 +45,9 @@ namespace RaceTracker
         {
             Subscribers.Add(watcher);
         }
+        public string toString()
+        {
+            return String.Format("{0}: {1} {2}", BIB, FirstName, LastName);
+        }
     }
 }

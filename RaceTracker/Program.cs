@@ -12,6 +12,7 @@ namespace RaceTracker
         [STAThread]
         static void Main()
         {
+            /*
             Tracker Rtracker = new Tracker();
 
             Thread uiThread = new Thread (new ThreadStart (LaunchDisplay));
@@ -30,6 +31,10 @@ namespace RaceTracker
             // Wait for display to be close, clean up receiver thread
             while (uiThread.IsAlive);
             receiver.Stop();
+            */
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainMenu());
 
         }
         static void LaunchDisplay()

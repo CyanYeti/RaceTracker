@@ -31,5 +31,9 @@ namespace RaceTracker
         {
             Racers[BIB].Update(position, time);
         }
+        public Dictionary<int, Racer> GetRacers() 
+        {
+            return Racers;
+        }
     }
 }
