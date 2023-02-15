@@ -36,9 +36,10 @@
             this.lblSelectedRacers = new System.Windows.Forms.Label();
             this.lbObserverTypes = new System.Windows.Forms.ListBox();
             this.lblObserverOptions = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnCreateObserver = new System.Windows.Forms.Button();
             this.lblCreatedObservers = new System.Windows.Forms.Label();
             this.lbCreatedObservers = new System.Windows.Forms.ListBox();
+            this.txtObserverName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbAllRacers
@@ -112,14 +113,15 @@
             this.lblObserverOptions.TabIndex = 7;
             this.lblObserverOptions.Text = "Create Peron";
             // 
-            // button1
+            // btnCreateObserver
             // 
-            this.button1.Location = new System.Drawing.Point(15, 114);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(210, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Create Person w/ Selected Racers";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCreateObserver.Location = new System.Drawing.Point(12, 139);
+            this.btnCreateObserver.Name = "btnCreateObserver";
+            this.btnCreateObserver.Size = new System.Drawing.Size(213, 23);
+            this.btnCreateObserver.TabIndex = 8;
+            this.btnCreateObserver.Text = "Create Person w/ Selected Racers";
+            this.btnCreateObserver.UseVisualStyleBackColor = true;
+            this.btnCreateObserver.Click += new System.EventHandler(this.btnCreateObserver_Click);
             // 
             // lblCreatedObservers
             // 
@@ -138,14 +140,23 @@
             this.lbCreatedObservers.Size = new System.Drawing.Size(213, 82);
             this.lbCreatedObservers.TabIndex = 9;
             // 
+            // txtObserverName
+            // 
+            this.txtObserverName.Location = new System.Drawing.Point(12, 113);
+            this.txtObserverName.Name = "txtObserverName";
+            this.txtObserverName.Size = new System.Drawing.Size(213, 20);
+            this.txtObserverName.TabIndex = 11;
+            this.txtObserverName.Text = "Person Name";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtObserverName);
             this.Controls.Add(this.lblCreatedObservers);
             this.Controls.Add(this.lbCreatedObservers);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCreateObserver);
             this.Controls.Add(this.lblObserverOptions);
             this.Controls.Add(this.lbObserverTypes);
             this.Controls.Add(this.lblSelectedRacers);
@@ -171,9 +182,10 @@
         private System.Windows.Forms.Label lblSelectedRacers;
         private System.Windows.Forms.ListBox lbObserverTypes;
         private System.Windows.Forms.Label lblObserverOptions;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCreateObserver;
         private System.Windows.Forms.Label lblCreatedObservers;
         private System.Windows.Forms.ListBox lbCreatedObservers;
+        private System.Windows.Forms.TextBox txtObserverName;
     }
 }
 

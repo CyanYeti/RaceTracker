@@ -35,5 +35,9 @@ namespace RaceTracker
         {
             return Racers;
         }
+        public Racer getRacer(int BIB)
+        {
+            return Racers[BIB];
+        }
     }
 }

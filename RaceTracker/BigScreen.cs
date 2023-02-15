@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace RaceTracker
 {
-    internal class Spectator : RaceViewer
+    internal class BigScreen : RaceViewer
     {
-        public Spectator(string name, string observerType = "support") : base(name, observerType) { }
+        public BigScreen(string name, string observerType = "big screen") : base(name, observerType) { }
     }
 }

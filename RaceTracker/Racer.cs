@@ -15,7 +15,7 @@ namespace RaceTracker
         private int BIB { get; set; }
         private int FinishTime { get; set; }
         private int StartTime { get; set; }
-        List<Observer> Subscribers = new List<Observer>();
+        List<RacerObserver> Subscribers = new List<RacerObserver>();
         private int Position { get; set; }
         private int CurrentTime { get; set; }
 
@@ -36,14 +36,18 @@ namespace RaceTracker
             // TODO Take in things that update and send it to observers
             // Send info every 5 minutes or major position changes +- 3 positions, or when they enter 1st or 2nd of their block
             // Staff can change email message 
-            foreach (Observer sub in Subscribers)
+            foreach (RacerObserver sub in Subscribers)
             {
-                sub.Update();
+                sub.Update(BIB, Position, CurrentTime);
             }
         }
-        public void Subscribe(Observer watcher)
+        public void Subscribe(RacerObserver watcher)
         {
             Subscribers.Add(watcher);
+        }
+        public void Unsubscribe(RacerObserver watcher)
+        {
+            Subscribers.Remove(watcher);
         }
         public string toString()
         {

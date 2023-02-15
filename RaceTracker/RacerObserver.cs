@@ -6,24 +6,26 @@ using System.Threading.Tasks;
 
 namespace RaceTracker
 {
-    internal abstract class Observer
+    internal class RacerObserver
     {
         // Type must be staff, support, or spectator
         // We need this as the Racer has to send each one updates at different times
         internal string Type { get; set; }
-        public Observer(Racer racer, string type)
+        public RacerObserver(Racer racer, string type)
         {
             Type = type;
             Subscribe(racer);
         }
 
-        public void Update()
+        public void Update(int BIB, int position, int time)
         {
+            // Todo take in new state and set it
+
 
         }
-        private void Subscribe<T>(T object) where T : Subject
+        private void Subscribe(Racer racer)
         {
-            object.Subscribe(this);
+            racer.Subscribe(this);
         }
         public void Unsubscribe(Racer racer)
         {
