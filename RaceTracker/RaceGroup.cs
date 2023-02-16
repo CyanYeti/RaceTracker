@@ -8,12 +8,12 @@ namespace RaceTracker
 {
     internal class RaceGroup
     {
-        private int Id { get; set; }
-        private string Label { get; set; }
-        private int RacerCount { get; set; }
-        private List<int> BIBNumbers = new List<int>();
-        private int BIBStart;
-        private int BIBEnd;
+        internal int Id { get; set; }
+        internal string Label { get; set; }
+        internal int RacerCount { get; set; }
+        internal List<int> BIBNumbers = new List<int>();
+        internal int BIBStart;
+        internal int BIBEnd;
         internal int BlockStartTime { get; set; }
         public RaceGroup(int id, string label, int blockStartTime, int bibStart, int bibEnd)
         {

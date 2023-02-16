@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace RaceTracker
 {
-    internal class Racer
+    // Trey: Racer is a subject that can be observed
+    internal class Racer : Subject
     {
-        private string FirstName { get; set; }
-        private string LastName { get; set; }
-        //private string Birthday { get; set; }
-        private RaceGroup RacerGroup { get; set; }
-        private int BIB { get; set; }
-        private int FinishTime { get; set; }
-        private int StartTime { get; set; }
-        List<RacerObserver> Subscribers = new List<RacerObserver>();
-        private int Position { get; set; }
-        private int CurrentTime { get; set; }
+        private string FirstName;
+        private string LastName;  
+        private RaceGroup RacerGroup;
+        public int BIB;
+        private int FinishTime;
+        private int StartTime;
+        internal int Sensor;
+        internal Dictionary<int, int> Progress = new Dictionary<int, int>();
+        private int CurrentTime;  
 
         public Racer(string firstname, string lastname, int bib, RaceGroup raceGroup, int finish = -1)
         {
@@ -29,29 +29,19 @@ namespace RaceTracker
 
         }
 
-        public void Update(int position, int time)
+        // Update racer state and notify subscribers
+        public void UpdateRacerState(int position, int time)
         {
-            Position = position;
+            Sensor = position;
             CurrentTime = time;
-            // TODO Take in things that update and send it to observers
             // Send info every 5 minutes or major position changes +- 3 positions, or when they enter 1st or 2nd of their block
-            // Staff can change email message 
-            foreach (RacerObserver sub in Subscribers)
-            {
-                sub.Update(BIB, Position, CurrentTime);
-            }
+            Notify();
         }
-        public void Subscribe(RacerObserver watcher)
-        {
-            Subscribers.Add(watcher);
-        }
-        public void Unsubscribe(RacerObserver watcher)
-        {
-            Subscribers.Remove(watcher);
-        }
+
         public string toString()
         {
             return String.Format("{0}: {1} {2}", BIB, FirstName, LastName);
         }
+        public RaceGroup getRaceGroup() { return RacerGroup; }
     }
 }

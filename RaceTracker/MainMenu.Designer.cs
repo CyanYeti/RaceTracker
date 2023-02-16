@@ -39,7 +39,6 @@
             this.btnCreateObserver = new System.Windows.Forms.Button();
             this.lblCreatedObservers = new System.Windows.Forms.Label();
             this.lbCreatedObservers = new System.Windows.Forms.ListBox();
-            this.txtObserverName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbAllRacers
@@ -115,7 +114,7 @@
             // 
             // btnCreateObserver
             // 
-            this.btnCreateObserver.Location = new System.Drawing.Point(12, 139);
+            this.btnCreateObserver.Location = new System.Drawing.Point(12, 113);
             this.btnCreateObserver.Name = "btnCreateObserver";
             this.btnCreateObserver.Size = new System.Drawing.Size(213, 23);
             this.btnCreateObserver.TabIndex = 8;
@@ -140,20 +139,11 @@
             this.lbCreatedObservers.Size = new System.Drawing.Size(213, 82);
             this.lbCreatedObservers.TabIndex = 9;
             // 
-            // txtObserverName
-            // 
-            this.txtObserverName.Location = new System.Drawing.Point(12, 113);
-            this.txtObserverName.Name = "txtObserverName";
-            this.txtObserverName.Size = new System.Drawing.Size(213, 20);
-            this.txtObserverName.TabIndex = 11;
-            this.txtObserverName.Text = "Person Name";
-            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.txtObserverName);
             this.Controls.Add(this.lblCreatedObservers);
             this.Controls.Add(this.lbCreatedObservers);
             this.Controls.Add(this.btnCreateObserver);
@@ -185,7 +175,6 @@
         private System.Windows.Forms.Button btnCreateObserver;
         private System.Windows.Forms.Label lblCreatedObservers;
         private System.Windows.Forms.ListBox lbCreatedObservers;
-        private System.Windows.Forms.TextBox txtObserverName;
     }
 }
 

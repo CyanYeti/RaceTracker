@@ -1,35 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RaceTracker
 {
-    internal class RacerObserver
+    public partial class RacerObserver : Form
     {
-        // Type must be staff, support, or spectator
-        // We need this as the Racer has to send each one updates at different times
-        internal string Type { get; set; }
-        public RacerObserver(Racer racer, string type)
+        public RacerObserver()
         {
-            Type = type;
-            Subscribe(racer);
-        }
-
-        public void Update(int BIB, int position, int time)
-        {
-            // Todo take in new state and set it
-
-
-        }
-        private void Subscribe(Racer racer)
-        {
-            racer.Subscribe(this);
-        }
-        public void Unsubscribe(Racer racer)
-        {
-            racer.Unsubscribe(this);
+            InitializeComponent();
         }
     }
 }

@@ -6,28 +6,10 @@ using System.Threading.Tasks;
 
 namespace RaceTracker
 {
-    internal abstract class Observer
+    internal interface Observer
     {
-        // Type must be staff, support, or spectator
-        // We need this as the Racer has to send each one updates at different times
-        internal string Type { get; set; }
-        public Observer(Racer racer, string type)
-        {
-            Type = type;
-            Subscribe(racer);
-        }
-
-        public void Update()
-        {
-
-        }
-        private void Subscribe<T>(T object) where T : Subject
-        {
-            object.Subscribe(this);
-        }
-        public void Unsubscribe(Racer racer)
-        {
-            racer.Unsubscribe(this);
-        }
+        void Update(Subject subject);
+        void Subscribe(Subject subject);
+        void Unsubscribe(Subject subject);
     }
 }

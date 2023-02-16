@@ -9,20 +9,21 @@ namespace RaceTracker
     internal class ViewerFactory
     {
         // Trey: Here is the simple factory to make the right type of viewer
-        public static RaceViewer Creator(string type, string name) 
+        public static RacerObserverOld Creator(string type, string name) 
         { 
             switch(type)
             {
                 case "support":
-                    return new Support(name);
+                    return new RacerObserverOld(name);
                 case "spectator":
-                    return new Spectator(name);
+                    return new RacerObserverOld(name);
                 case "bigscreen":
-                    Console.WriteLine("In Factory");
-                    return new BigScreen(name);
+                    return new RacerObserverOld(name);
                 case "staff":
-                    return new Staff(name);
-            }
+                    return new RacerObserverOld(name);
+                case "cheaters":
+                    break;
+            }   
             return null;
         }
     }

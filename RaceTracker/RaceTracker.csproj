@@ -59,7 +59,13 @@
     </Compile>
     <Compile Include="Messages.cs" />
     <Compile Include="Observer.cs" />
-    <Compile Include="RacerObserver.cs" />
+    <Compile Include="RacerObserver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RacerObserver.Designer.cs">
+      <DependentUpon>RacerObserver.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RacerObserverOld.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaceGroup.cs" />
@@ -84,6 +90,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RacerObserver.resx">
+      <DependentUpon>RacerObserver.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Groups.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

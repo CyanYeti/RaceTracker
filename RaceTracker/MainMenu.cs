@@ -31,7 +31,7 @@ namespace RaceTracker
             }
 
             // Populate observer types
-            string[] observerTypes = { "spectator", "support", "big screen", "staff" };
+            string[] observerTypes = { "spectator", "support", "big screen", "staff", "cheaters" };
             foreach (string observerType in observerTypes)
             {
                 this.lbObserverTypes.Items.Add(observerType);
@@ -61,22 +61,15 @@ namespace RaceTracker
         }
 
         // Trey: Here I am using a factory pattern to create the diffrent types of viewers and add them to the correct list
-        private void addViewer<TChild>(string type, Dictionary<string, TChild> viewers) where TChild : RaceViewer
+        private void addViewer<TChild>(string type, Dictionary<string, TChild> viewers) where TChild : RacerObserverOld
         {
-            string observerName = this.txtObserverName.Text.ToString();
-            if(viewers.ContainsKey(observerName))
-            {
-                this.txtObserverName.Text = "Name Exists";
-                return;
-            }
+            string observerName = type.ToString() + viewers.Count.ToString();
             viewers.Add(observerName, (TChild)ViewerFactory.Creator(type, observerName));
-            Console.WriteLine(viewers);
             foreach (string racer in this.lbSelectedRacers.SelectedItems)
             {
                 viewers[observerName].Subscribe(RTracker.getRacer(getBIB(racer)));
             }
-            Console.WriteLine(viewers[observerName].getName());
-            lbCreatedObservers.Items.Add(viewers[observerName].getName());
+            lbCreatedObservers.Items.Add(observerName);
         }
 
         private void btnCreateObserver_Click(object sender, EventArgs e)
@@ -96,6 +89,9 @@ namespace RaceTracker
                     addViewer(type, bigscreens);
                     break;
                 case "staff":
+                    addViewer(type, staffs);
+                    break;
+                case "cheaters":
                     addViewer(type, staffs);
                     break;
             }
