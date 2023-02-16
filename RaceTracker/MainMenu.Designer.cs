@@ -39,6 +39,7 @@
             this.btnCreateObserver = new System.Windows.Forms.Button();
             this.lblCreatedObservers = new System.Windows.Forms.Label();
             this.lbCreatedObservers = new System.Windows.Forms.ListBox();
+            this.btnStartRace = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbAllRacers
@@ -139,11 +140,22 @@
             this.lbCreatedObservers.Size = new System.Drawing.Size(213, 82);
             this.lbCreatedObservers.TabIndex = 9;
             // 
+            // btnStartRace
+            // 
+            this.btnStartRace.Location = new System.Drawing.Point(12, 415);
+            this.btnStartRace.Name = "btnStartRace";
+            this.btnStartRace.Size = new System.Drawing.Size(75, 23);
+            this.btnStartRace.TabIndex = 11;
+            this.btnStartRace.Text = "Start Race";
+            this.btnStartRace.UseVisualStyleBackColor = true;
+            this.btnStartRace.Click += new System.EventHandler(this.btnStartRace_Click);
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnStartRace);
             this.Controls.Add(this.lblCreatedObservers);
             this.Controls.Add(this.lbCreatedObservers);
             this.Controls.Add(this.btnCreateObserver);
@@ -175,6 +187,7 @@
         private System.Windows.Forms.Button btnCreateObserver;
         private System.Windows.Forms.Label lblCreatedObservers;
         private System.Windows.Forms.ListBox lbCreatedObservers;
+        private System.Windows.Forms.Button btnStartRace;
     }
 }
 

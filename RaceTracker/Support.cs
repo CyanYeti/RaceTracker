@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceTracker
 {
-    internal class Support : RacerObserverOld
+    internal class Support : RacerObserver
     {
         public Support(string name, string observerType = "support") : base(observerType) { }
     }

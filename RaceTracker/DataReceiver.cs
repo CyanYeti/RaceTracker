@@ -16,10 +16,8 @@ namespace RaceTracker
         private bool keepGoing;
         private Thread myRunThread;
 
-        private Tracker Rtracker;
-        internal DataReceiver(ref Tracker tracker)
+        internal DataReceiver()
         {
-            Rtracker = tracker;
         }
         public void Start()
         {
@@ -49,11 +47,13 @@ namespace RaceTracker
                         RacerStatus statusMessage = RacerStatus.Decode(messageByes);
                         if (statusMessage != null)
                         {
+                            /*
                             Console.WriteLine("Race Bib #={0}, Sensor={1}, Time={2}",
-                                        statusMessage.RacerBibNumber,
-                                        statusMessage.SensorId,
-                                        statusMessage.Timestamp);
-                            Rtracker.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
+                                      statusMessage.RacerBibNumber,
+                                    statusMessage.SensorId,
+                                  statusMessage.Timestamp);*/
+
+                            MainMenu.messageQueue.Enqueue(statusMessage);
                             // Position represents the sensor
                         }
                     }

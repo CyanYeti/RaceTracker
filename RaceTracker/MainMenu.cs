@@ -1,31 +1,32 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace RaceTracker
 {
     public partial class MainMenu : Form
     {
-        //private Tracker Rtracker { get; set; }
+        internal static ConcurrentQueue<RacerStatus> messageQueue = new ConcurrentQueue<RacerStatus>();
         private DataReceiver receiver;
-        private Dictionary<string, Spectator> spectators = new Dictionary<string, Spectator>();
-        private Dictionary<string, Support> supports = new Dictionary<string, Support>();
-        private Dictionary<string, Staff> staffs = new Dictionary<string, Staff>();
-        private Dictionary<string, BigScreen> bigscreens = new Dictionary<string, BigScreen>();
-        private Tracker RTracker = new Tracker();
+        private Dictionary<string, RacerObserver> ObserverWindows = new Dictionary<string, RacerObserver>();
+        private Tracker StartingState = new Tracker();
+
         public MainMenu()
         {
             InitializeComponent();
 
             // PUll in all racers into select box
-            foreach (KeyValuePair<int, Racer> racer in RTracker.GetRacers() )
+            foreach (KeyValuePair<int, Racer> racer in StartingState.GetRacers() )
             {
                 this.lbAllRacers.Items.Add(racer.Value.toString());
             }
@@ -38,8 +39,10 @@ namespace RaceTracker
             }
 
             // Passing the data storage class Tracker by reference
-            receiver = new DataReceiver(ref RTracker);
+            receiver = new DataReceiver();
             receiver.Start();
+
+            
 
             // For now just read a line from the console 
             //string tmp = Console.ReadLine();
@@ -60,43 +63,46 @@ namespace RaceTracker
             return Convert.ToInt32(racer.Split(':')[0]);
         }
 
-        // Trey: Here I am using a factory pattern to create the diffrent types of viewers and add them to the correct list
-        private void addViewer<TChild>(string type, Dictionary<string, TChild> viewers) where TChild : RacerObserverOld
-        {
-            string observerName = type.ToString() + viewers.Count.ToString();
-            viewers.Add(observerName, (TChild)ViewerFactory.Creator(type, observerName));
-            foreach (string racer in this.lbSelectedRacers.SelectedItems)
-            {
-                viewers[observerName].Subscribe(RTracker.getRacer(getBIB(racer)));
-            }
-            lbCreatedObservers.Items.Add(observerName);
-        }
 
         private void btnCreateObserver_Click(object sender, EventArgs e)
         {
+            if(this.lbObserverTypes.SelectedItem == null) { return; }
             string type = this.lbObserverTypes.SelectedItem.ToString();
-            type = type.ToLower().Replace(" ", "");
-            switch (type)
+            string observerName = type.ToString() + ObserverWindows.Count.ToString();
+
+            RacerObserver form = new RacerObserver(observerName);
+
+            ObserverWindows.Add(observerName, new RacerObserver(observerName));
+
+            foreach (string racer in this.lbSelectedRacers.Items)
             {
-                case "spectator":
-                    addViewer(type, spectators);
-                    break;
-                case "support":
-                    addViewer(type, supports);
-                    break;
-                case "bigscreen":
-                    Console.WriteLine("Adding viewer");
-                    addViewer(type, bigscreens);
-                    break;
-                case "staff":
-                    addViewer(type, staffs);
-                    break;
-                case "cheaters":
-                    addViewer(type, staffs);
-                    break;
+                ObserverWindows[observerName].Subscribe(StartingState.getRacer(getBIB(racer)));
             }
+
+            lbCreatedObservers.Items.Add(observerName);
+            ObserverWindows[observerName].Show();
+
 
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            receiver.Stop();
+        }
+
+        private void btnStartRace_Click(object sender, EventArgs e)
+        {
+            while (true)
+            {
+                RacerStatus statusMessage;
+                while (messageQueue.TryDequeue(out statusMessage))
+                {
+                    //Console.WriteLine(statusMessage.ToString());
+                    StartingState.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
+
+                }
+            }
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace RaceTracker
 
         public void UpdateRacer(int BIB, int position, int time)
         {
+            Console.Write(BIB);
             Racers[BIB].UpdateRacerState(position, time);
         }
         public Dictionary<int, Racer> GetRacers() 

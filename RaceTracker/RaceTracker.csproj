@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigScreen.cs" />
+    <Compile Include="BigScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CheatingComputer.cs" />
     <Compile Include="CSVParser.cs" />
     <Compile Include="DataReceiver.cs" />
@@ -65,18 +67,22 @@
     <Compile Include="RacerObserver.Designer.cs">
       <DependentUpon>RacerObserver.cs</DependentUpon>
     </Compile>
-    <Compile Include="RacerObserverOld.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaceGroup.cs" />
     <Compile Include="Racer.cs" />
     <Compile Include="RaceViewer.cs" />
-    <Compile Include="Spectator.cs" />
-    <Compile Include="Staff.cs" />
+    <Compile Include="Spectator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Staff.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Subject.cs" />
-    <Compile Include="Support.cs" />
+    <Compile Include="Support.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Tracker.cs" />
-    <Compile Include="ViewerFactory.cs" />
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>

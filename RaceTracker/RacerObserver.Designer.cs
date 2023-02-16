@@ -28,24 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.lvRacersWatched = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
-            // listView1
+            // lvRacersWatched
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(13, 13);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(775, 425);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.lvRacersWatched.HideSelection = false;
+            this.lvRacersWatched.Location = new System.Drawing.Point(13, 13);
+            this.lvRacersWatched.Name = "lvRacersWatched";
+            this.lvRacersWatched.Size = new System.Drawing.Size(775, 425);
+            this.lvRacersWatched.TabIndex = 0;
+            this.lvRacersWatched.UseCompatibleStateImageBehavior = false;
             // 
             // RacerObserver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.lvRacersWatched);
             this.Name = "RacerObserver";
             this.Text = "RacerObserver";
             this.ResumeLayout(false);
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView lvRacersWatched;
     }
 }

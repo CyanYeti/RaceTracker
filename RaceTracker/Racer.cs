@@ -9,15 +9,15 @@ namespace RaceTracker
     // Trey: Racer is a subject that can be observed
     internal class Racer : Subject
     {
-        private string FirstName;
-        private string LastName;  
-        private RaceGroup RacerGroup;
-        public int BIB;
-        private int FinishTime;
-        private int StartTime;
+        internal string FirstName;
+        internal string LastName;
+        internal RaceGroup RacerGroup;
+        internal int BIB;
+        internal int FinishTime;
+        internal int StartTime;
         internal int Sensor;
         internal Dictionary<int, int> Progress = new Dictionary<int, int>();
-        private int CurrentTime;  
+        internal int CurrentTime;  
 
         public Racer(string firstname, string lastname, int bib, RaceGroup raceGroup, int finish = -1)
         {

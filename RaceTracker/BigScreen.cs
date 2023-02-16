@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceTracker
 {
-    internal class BigScreen : RacerObserverOld
+    internal class BigScreen : RacerObserver
     {
         public BigScreen(string name, string observerType = "big screen") : base(observerType) { }
     }
