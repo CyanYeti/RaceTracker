@@ -43,10 +43,20 @@ namespace RaceTracker
             receiver.Start();
 
             
-
             // For now just read a line from the console 
             //string tmp = Console.ReadLine();
 
+        }
+
+        private void dequeueMessages()
+        {
+            RacerStatus statusMessage;
+            while (messageQueue.TryDequeue(out statusMessage))
+            {
+                //Console.WriteLine(statusMessage.ToString());
+                StartingState.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
+
+            }
         }
 
         private void btnSelectRacer_Click(object sender, EventArgs e)
@@ -93,16 +103,13 @@ namespace RaceTracker
 
         private void btnStartRace_Click(object sender, EventArgs e)
         {
+            // Open simulator before start
             while (true)
             {
-                RacerStatus statusMessage;
-                while (messageQueue.TryDequeue(out statusMessage))
-                {
-                    //Console.WriteLine(statusMessage.ToString());
-                    StartingState.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
-
-                }
+                dequeueMessages();
             }
+            //System.Threading.Timer newMessages = new System.Threading.Timer(dequeueMessages, null, 20, 20);
+
         }
     }
 }
