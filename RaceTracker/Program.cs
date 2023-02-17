@@ -9,39 +9,19 @@ namespace RaceTracker
 {
     internal static class Program
     {
+        // One master list of Racers. Only thing that changes any data in this is when a message comes in and updates a racer
+        // This is not to allow observers to directly access racers, they only receive a Notify from from the UpdateRacer in the 
+        // This is needed so that when a RacerObserver or the CheatingComputer subscribe to a racer they subscribe to the same object
+        internal static readonly Tracker State = new Tracker();
+
         [STAThread]
         static void Main()
         {
-            /*
-            Tracker Rtracker = new Tracker();
 
-            Thread uiThread = new Thread (new ThreadStart (LaunchDisplay));
-            uiThread.Start();
-            // This dummy server receives RacerStatus Messages from the simulator
-            
-
-
-            // Passing the data storage class Tracker by reference
-            DataReceiver receiver = new DataReceiver(ref Rtracker);
-            receiver.Start();
-
-            // For now just read a line from the console 
-            //string tmp = Console.ReadLine();
-
-            // Wait for display to be close, clean up receiver thread
-            while (uiThread.IsAlive);
-            receiver.Stop();
-            */
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainMenu());
 
-        }
-        static void LaunchDisplay()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainMenu());
         }
 
     }

@@ -10,7 +10,7 @@ namespace RaceTracker
     {
         private Dictionary<int, Racer> Racers = new Dictionary<int, Racer>();
         private Dictionary<int, RaceGroup> Groups = new Dictionary<int, RaceGroup>();
-        public Tracker() 
+        public Tracker()
         {
             List<List<string>> groupsData = CSVParser.ParseCSV("Groups.csv");
             // Group ID is the groups key
@@ -25,6 +25,7 @@ namespace RaceTracker
             {
                 Racers.Add(Convert.ToInt32(racer[2]), new Racer(racer[0], racer[1], Convert.ToInt32(racer[2]), Groups[Convert.ToInt32(racer[3])]));
             }
+            
         } 
 
         public void UpdateRacer(int BIB, int position, int time)
@@ -36,7 +37,7 @@ namespace RaceTracker
         {
             return Racers;
         }
-        public Racer getRacer(int BIB)
+        public Racer GetRacer(int BIB)
         {
             return Racers[BIB];
         }

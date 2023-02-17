@@ -40,6 +40,9 @@
             this.lblCreatedObservers = new System.Windows.Forms.Label();
             this.lbCreatedObservers = new System.Windows.Forms.ListBox();
             this.btnStartRace = new System.Windows.Forms.Button();
+            this.btnCreateCheaterObserver = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbCheatersObservers = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lbAllRacers
@@ -119,30 +122,30 @@
             this.btnCreateObserver.Name = "btnCreateObserver";
             this.btnCreateObserver.Size = new System.Drawing.Size(213, 23);
             this.btnCreateObserver.TabIndex = 8;
-            this.btnCreateObserver.Text = "Create Person w/ Selected Racers";
+            this.btnCreateObserver.Text = "Create Person";
             this.btnCreateObserver.UseVisualStyleBackColor = true;
             this.btnCreateObserver.Click += new System.EventHandler(this.btnCreateObserver_Click);
             // 
             // lblCreatedObservers
             // 
             this.lblCreatedObservers.AutoSize = true;
-            this.lblCreatedObservers.Location = new System.Drawing.Point(15, 195);
+            this.lblCreatedObservers.Location = new System.Drawing.Point(12, 266);
             this.lblCreatedObservers.Name = "lblCreatedObservers";
-            this.lblCreatedObservers.Size = new System.Drawing.Size(40, 13);
+            this.lblCreatedObservers.Size = new System.Drawing.Size(55, 13);
             this.lblCreatedObservers.TabIndex = 10;
-            this.lblCreatedObservers.Text = "People";
+            this.lblCreatedObservers.Text = "Observers";
             // 
             // lbCreatedObservers
             // 
             this.lbCreatedObservers.FormattingEnabled = true;
-            this.lbCreatedObservers.Location = new System.Drawing.Point(15, 211);
+            this.lbCreatedObservers.Location = new System.Drawing.Point(12, 282);
             this.lbCreatedObservers.Name = "lbCreatedObservers";
-            this.lbCreatedObservers.Size = new System.Drawing.Size(213, 82);
+            this.lbCreatedObservers.Size = new System.Drawing.Size(213, 121);
             this.lbCreatedObservers.TabIndex = 9;
             // 
             // btnStartRace
             // 
-            this.btnStartRace.Location = new System.Drawing.Point(12, 415);
+            this.btnStartRace.Location = new System.Drawing.Point(12, 409);
             this.btnStartRace.Name = "btnStartRace";
             this.btnStartRace.Size = new System.Drawing.Size(75, 23);
             this.btnStartRace.TabIndex = 11;
@@ -150,11 +153,40 @@
             this.btnStartRace.UseVisualStyleBackColor = true;
             this.btnStartRace.Click += new System.EventHandler(this.btnStartRace_Click);
             // 
+            // btnCreateCheaterObserver
+            // 
+            this.btnCreateCheaterObserver.Location = new System.Drawing.Point(12, 240);
+            this.btnCreateCheaterObserver.Name = "btnCreateCheaterObserver";
+            this.btnCreateCheaterObserver.Size = new System.Drawing.Size(213, 23);
+            this.btnCreateCheaterObserver.TabIndex = 14;
+            this.btnCreateCheaterObserver.Text = "Create Cheater Obserevr";
+            this.btnCreateCheaterObserver.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 136);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(124, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Create Cheater Observer";
+            // 
+            // lbCheatersObservers
+            // 
+            this.lbCheatersObservers.FormattingEnabled = true;
+            this.lbCheatersObservers.Location = new System.Drawing.Point(12, 152);
+            this.lbCheatersObservers.Name = "lbCheatersObservers";
+            this.lbCheatersObservers.Size = new System.Drawing.Size(213, 82);
+            this.lbCheatersObservers.TabIndex = 12;
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnCreateCheaterObserver);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbCheatersObservers);
             this.Controls.Add(this.btnStartRace);
             this.Controls.Add(this.lblCreatedObservers);
             this.Controls.Add(this.lbCreatedObservers);
@@ -188,6 +220,9 @@
         private System.Windows.Forms.Label lblCreatedObservers;
         private System.Windows.Forms.ListBox lbCreatedObservers;
         private System.Windows.Forms.Button btnStartRace;
+        private System.Windows.Forms.Button btnCreateCheaterObserver;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lbCheatersObservers;
     }
 }
 

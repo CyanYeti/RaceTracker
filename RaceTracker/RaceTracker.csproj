@@ -50,6 +50,12 @@
     <Compile Include="BigScreen.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CheaterObserver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheaterObserver.Designer.cs">
+      <DependentUpon>CheaterObserver.cs</DependentUpon>
+    </Compile>
     <Compile Include="CheatingComputer.cs" />
     <Compile Include="CSVParser.cs" />
     <Compile Include="DataReceiver.cs" />
@@ -71,7 +77,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RaceGroup.cs" />
     <Compile Include="Racer.cs" />
-    <Compile Include="RaceViewer.cs" />
     <Compile Include="Spectator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,6 +88,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tracker.cs" />
+    <EmbeddedResource Include="CheaterObserver.resx">
+      <DependentUpon>CheaterObserver.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>

@@ -18,17 +18,17 @@ namespace RaceTracker
     {
         internal static ConcurrentQueue<RacerStatus> messageQueue = new ConcurrentQueue<RacerStatus>();
         private DataReceiver receiver;
-        private Dictionary<string, RacerObserver> ObserverWindows = new Dictionary<string, RacerObserver>();
-        private Tracker StartingState = new Tracker();
-
+        private Dictionary<string, Form> ObserverWindows = new Dictionary<string, Form>();
+        private CheatingComputer CheaterComputer = new CheatingComputer();
+        
         public MainMenu()
         {
             InitializeComponent();
 
             // PUll in all racers into select box
-            foreach (KeyValuePair<int, Racer> racer in StartingState.GetRacers() )
+            foreach (KeyValuePair<int, Racer> racer in Program.State.GetRacers() )
             {
-                this.lbAllRacers.Items.Add(racer.Value.toString());
+                this.lbAllRacers.Items.Add(racer.Value.ToString());
             }
 
             // Populate observer types
@@ -38,9 +38,12 @@ namespace RaceTracker
                 this.lbObserverTypes.Items.Add(observerType);
             }
 
-            // Passing the data storage class Tracker by reference
+            // Start the data receiver,
             receiver = new DataReceiver();
             receiver.Start();
+
+
+            // Start cheating computer
 
             
             // For now just read a line from the console 
@@ -53,9 +56,7 @@ namespace RaceTracker
             RacerStatus statusMessage;
             while (messageQueue.TryDequeue(out statusMessage))
             {
-                //Console.WriteLine(statusMessage.ToString());
-                StartingState.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
-
+                Program.State.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
             }
         }
 
@@ -80,14 +81,35 @@ namespace RaceTracker
             string type = this.lbObserverTypes.SelectedItem.ToString();
             string observerName = type.ToString() + ObserverWindows.Count.ToString();
 
-            RacerObserver form = new RacerObserver(observerName);
 
-            ObserverWindows.Add(observerName, new RacerObserver(observerName));
 
-            foreach (string racer in this.lbSelectedRacers.Items)
+            if(type != "cheaters")
             {
-                ObserverWindows[observerName].Subscribe(StartingState.getRacer(getBIB(racer)));
+                RacerObserver form = new RacerObserver(observerName);
+
+                foreach (string racer in this.lbSelectedRacers.Items)
+                {
+                    form.Subscribe(Program.State.GetRacer(getBIB(racer)));
+                }
+                ObserverWindows.Add(observerName, form as Form);
+
             }
+            else
+            {
+                // The selected racers go straight into the observer. 
+                // It could subscribe to racers, but we don't actually care about the racers state, just who they are (BIB)
+                Dictionary<int, Racer> racersToWatch = new Dictionary<int, Racer>();
+
+                foreach (string racer in this.lbSelectedRacers.Items)
+                {
+                    racersToWatch.Add(getBIB(racer), Program.State.GetRacer(getBIB(racer)));
+                }
+                CheaterObserver form = new CheaterObserver(observerName, racersToWatch);
+
+                form.Subscribe(CheaterComputer);
+                ObserverWindows.Add(observerName, form as Form);
+            }
+
 
             lbCreatedObservers.Items.Add(observerName);
             ObserverWindows[observerName].Show();
@@ -101,15 +123,24 @@ namespace RaceTracker
             receiver.Stop();
         }
 
+        private int ReadMessageFrequency;
+        private System.Windows.Forms.Timer MessageTimer = new System.Windows.Forms.Timer();
+
         private void btnStartRace_Click(object sender, EventArgs e)
         {
             // Open simulator before start
-            while (true)
-            {
-                dequeueMessages();
-            }
-            //System.Threading.Timer newMessages = new System.Threading.Timer(dequeueMessages, null, 20, 20);
+            //dequeueMessages();
+            //System.Threading.Timer newMessages = new System.Threading.Timer(dequeueMessages, null, 0, 20);
+            if (ReadMessageFrequency== 0) { ReadMessageFrequency = 20; }
+            MessageTimer.Interval = ReadMessageFrequency;
+            MessageTimer.Tick += MessageTimer_Tick;
+            MessageTimer.Start();
 
+        }
+
+        private void MessageTimer_Tick(object sender, EventArgs e)
+        {
+            dequeueMessages();
         }
     }
 }

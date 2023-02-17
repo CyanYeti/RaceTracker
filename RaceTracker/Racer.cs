@@ -12,7 +12,7 @@ namespace RaceTracker
         internal string FirstName;
         internal string LastName;
         internal RaceGroup RacerGroup;
-        internal int BIB;
+        internal readonly int BIB;
         internal int FinishTime;
         internal int StartTime;
         internal int Sensor;
@@ -32,13 +32,14 @@ namespace RaceTracker
         // Update racer state and notify subscribers
         public void UpdateRacerState(int position, int time)
         {
+            Progress.Add(position, time);
             Sensor = position;
             CurrentTime = time;
             // Send info every 5 minutes or major position changes +- 3 positions, or when they enter 1st or 2nd of their block
             Notify();
         }
 
-        public string toString()
+        public override string ToString()
         {
             return String.Format("{0}: {1} {2}", BIB, FirstName, LastName);
         }
