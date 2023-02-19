@@ -9,6 +9,13 @@ namespace RaceTracker
     internal class CheatingComputer : Subject, Observer
     {
         internal List<Racer> Cheaters = new List<Racer>();
+        internal List<Racer> CheatedWith = new List<Racer>();
+        private string Name;
+        private readonly object myLock = new object();
+
+        private List<Racer> RacersWatched = new List<Racer>();
+
+        string Observer.ObserverName => "Main Cheating Computer";
 
         public CheatingComputer()
         {
@@ -18,58 +25,84 @@ namespace RaceTracker
                 Subscribe(racer.Value);
             }
         }
-        private void AddCheater(Racer racer)
+        private void AddCheater(Racer cheater, Racer cheaterWith)
         {
-            Cheaters.Add(racer);
+            Cheaters.Add(cheater);
+            CheatedWith.Add(cheaterWith);
             Notify(); // Send me to observers
         }
 
         // Update, Subscribe, Unsubscribe as this is an observer
+        // Trey: The cheaters seem to finding the same right ones as far as I can tell. It does swap the order of some of the cheaters in the list though
         public void Update(Subject subject)
         {
             Racer racer = subject as Racer;
 
             // Test if they are cheating
-            // Cheating flag, if they cheat with anyone then they are marked a cheater
-            bool cheating = false;
-            foreach (KeyValuePair<int, Racer> otherRacers in Program.State.GetRacers())
+            foreach (KeyValuePair<int, Racer> otherRacer in Program.State.GetRacers())
             {
                 // If this is the first sensor for either racer, we don't have the data to know
-                if (racer.Sensor == 0 || otherRacers.Value.Sensor== 0) { continue; }
+                if (racer.Sensor == 0 || otherRacer.Value.Sensor== 0) { continue; }
                 // if the two racers are not at the same sensor we don't check them, we will once the other one has caught up
-                if (otherRacers.Value.Sensor != racer.Sensor) { continue; }
+                if (otherRacer.Value.Sensor != racer.Sensor) { continue; }
                 // Skip if it is us
-                if (otherRacers.Key == racer.BIB) { continue; }
+                if (otherRacer.Key == racer.BIB) { continue; }
                 // Skip if they are in our group
-                if (otherRacers.Value.getRaceGroup().Id == racer.getRaceGroup().Id) { continue; }
+                if (otherRacer.Value.getRaceGroup().Id == racer.getRaceGroup().Id) { continue; }
                 // If they are at the same sensor and the sensor before within 3 seconds of each other they are cheating
-                /*
-                Console.WriteLine("Others progress:");
-                foreach(KeyValuePair<int, int> sensor in otherRacers.Value.Progress) Console.WriteLine("{0}, {1},{2}", sensor.Key, sensor.Value, otherRacers.Value.Sensor);
-
-                Console.WriteLine("My progress:");
-                foreach (KeyValuePair<int, int> sensor in racer.Progress) Console.WriteLine("{0}, {1}, {2}", sensor.Key, sensor.Value, racer.Sensor);
-                */
-                if (Math.Abs( otherRacers.Value.Progress[racer.Sensor] - racer.Progress[racer.Sensor]) < 3000 && Math.Abs(otherRacers.Value.Progress[racer.Sensor - 1] - racer.Progress[racer.Sensor - 1]) < 3000)
+                if (Math.Abs( otherRacer.Value.Progress[racer.Sensor] - racer.Progress[racer.Sensor]) < 3000 && Math.Abs(otherRacer.Value.Progress[racer.Sensor - 1] - racer.Progress[racer.Sensor - 1]) < 3000)
                 {
-                    //Console.WriteLine("Cheater {0}", racer.BIB);
-                    cheating = true;
+                    lock (myLock)
+                    {
+                        if (Cheaters.Contains(racer)) { continue; }
+                        if (!AlreadyCheatedPair(racer, otherRacer.Value))
+                        {
+                            AddCheater(racer, otherRacer.Value);
+                        }
+                    }
+                    
                 }
                 
             }
-            if (cheating) { AddCheater(racer); }
 
+        }
+
+        // Makes sure there are no duplicate pairs in the cheating computer.
+        private bool AlreadyCheatedPair(Racer cheater, Racer cheatedWith)
+        {
+            for (int i = 0; i < Cheaters.Count; i++)
+            {
+                if (Cheaters[i].BIB == cheater.BIB && CheatedWith[i].BIB == cheatedWith.BIB)
+                {
+                    return true;
+                }
+                if (Cheaters[i].BIB == cheatedWith.BIB && CheatedWith[i].BIB == cheater.BIB)
+                {
+                    return true;
+                }
+            }
+           
+            return false;
         }
         public void Subscribe(Subject subject)
         {
             Racer racer = subject as Racer;
+            RacersWatched.Add(racer);
             racer.Subscribe(this);
-            // We all ready subscribe to everything, don't need to track
         }
         public void Unsubscribe(Subject subject)
         {
             return; //Cheating computer needs to track all racers, never unsubscribes
         }
 
+        public List<Subject> GetSubjects()
+        {
+            List<Subject> subjects = new List<Subject>();
+            foreach (Racer racer in RacersWatched)
+            {
+                subjects.Add(racer as Subject);
+            }
+            return subjects;
+        }
     }
 }

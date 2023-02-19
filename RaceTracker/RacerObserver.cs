@@ -16,12 +16,17 @@ namespace RaceTracker
         private bool RefreshNeeded;
         private readonly Timer refreshTimer = new Timer();
         public int RefreshFrequency { get; set; }
+        private readonly object myLock = new object();
+
+
+        public string ObserverName { get; }
 
         public RacerObserver(string name)
         {
             InitializeComponent();
 
             this.Text  = name;
+            ObserverName = name;
             // Add Columns
             ColumnHeader bibHeader = new ColumnHeader();
             bibHeader.Text = "BIB";
@@ -35,8 +40,12 @@ namespace RaceTracker
             ColumnHeader timeHeader = new ColumnHeader();
             timeHeader.Text = "Current Sensor";
             this.lvRacersWatched.Columns.Add(timeHeader);
+            this.lvRacersWatched.View = View.Details;
             this.Load += RacerObserver_Load;
-            DisplayWatched();
+            lock (myLock)
+            {
+                DisplayWatched();
+            }
 
         }
         private void DisplayWatched()
@@ -47,9 +56,9 @@ namespace RaceTracker
             {
                 //Console.WriteLine(racer.Value.ToString());
                 ListViewItem lvi = new ListViewItem(racer.Value.BIB.ToString());
-                lvi.SubItems.Add(racer.Value.FirstName + racer.Value.LastName);
+                lvi.SubItems.Add(racer.Value.LastName + ", " + racer.Value.FirstName);
                 lvi.SubItems.Add(racer.Value.Sensor.ToString());
-                lvi.SubItems.Add(racer.Value.CurrentTime.ToString());
+                lvi.SubItems.Add(TimeSpan.FromMilliseconds(racer.Value.CurrentTime).ToString());
                 this.lvRacersWatched.Items.Add(lvi);
                 this.lvRacersWatched.View = View.Details;
             }
@@ -57,28 +66,48 @@ namespace RaceTracker
 
         public void Update(Subject subject)
         {
-            // Todo take in new state and set it
             Racer racer = subject as Racer;
 
             if (racer == null) return;
+            lock (myLock)
+            {
 
-            RacersWatched[racer.BIB] = racer;
+                RacersWatched[racer.BIB] = racer;
+            }
+
 
             RefreshNeeded = true;
         }
         public void Subscribe(Subject subject)
         {
             Racer racer = subject as Racer;
-            racer.Subscribe(this);
-            RacersWatched.Add(racer.BIB, racer);
+            Console.WriteLine(racer.BIB);
+            lock (myLock)
+            {
+                racer.Subscribe(this);
+                RacersWatched.Add(racer.BIB, racer);
+            }
+
             RefreshNeeded = true;
         }
         public void Unsubscribe(Subject subject)
         {
             Racer racer = subject as Racer;
-            racer.Unsubscribe(this);
-            RacersWatched.Remove(racer.BIB);
+            lock (myLock)
+            {
+                racer.Unsubscribe(this);
+                RacersWatched.Remove(racer.BIB);
+            }
             RefreshNeeded = true;
+        }
+        public List<Subject> GetSubjects()
+        {
+            List<Subject> subjects = new List<Subject>();
+            foreach(KeyValuePair<int, Racer> kvp in RacersWatched)
+            {
+                subjects.Add(kvp.Value as Subject);
+            }
+            return subjects;
         }
 
         private void RacerObserver_Load(object sender, EventArgs e)
@@ -95,7 +124,10 @@ namespace RaceTracker
         private void refreshTimer_Tick(object sender, EventArgs e)
         {
             if (!RefreshNeeded) return;
-            DisplayWatched();
+            lock (myLock)
+            {
+                DisplayWatched();
+            }
             RefreshNeeded = false;
         }
     }

@@ -28,16 +28,6 @@ namespace RaceTracker
 }
 
 /* TODO:
- * Copy over needed sensor simulator code, basically call it up.
- * Create a list of racers
- * Spectators, Support, and Staff need to be able to select multiple racers to subscribe to
- * 
- * Email is to a txt file.
- * 
- * Cheating detection
- * 
- * Multithread?
- * 
  * Test
  * UML
  */

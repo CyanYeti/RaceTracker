@@ -8,8 +8,10 @@ namespace RaceTracker
 {
     internal interface Observer
     {
+        string ObserverName { get;  }
         void Update(Subject subject);
         void Subscribe(Subject subject);
         void Unsubscribe(Subject subject);
+        List<Subject> GetSubjects();
     }
 }

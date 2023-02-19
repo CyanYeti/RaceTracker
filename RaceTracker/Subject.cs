@@ -12,24 +12,41 @@ namespace RaceTracker
         // Trey: Here is the parent subject class for observable classes
         // After struggling for a while I used a very similar structure to the BouncingBall
         private List<Observer> observers = new List<Observer>();
+        private readonly object myLock = new object();
         public void Subscribe(Observer observer)
         {
-            observers.Add(observer);
+            lock (myLock)
+            {
+                if(observer != null && !observers.Contains(observer))
+                {
+                    observers.Add(observer);
+                }
+            }
         }
         public void Unsubscribe(Observer observer)  
         {
-            observers.Remove(observer);
+            lock (myLock)
+            {
+                if (!observers.Contains(observer)) return;
+                observers.Remove(observer);
+            }
         }
         public void UnsubscribeAll()
         {
-            observers.Clear();
+            lock (myLock)
+            {
+                observers.Clear();
+            }
         }
         public void Notify()
         {
-            // This could be a pointer but this is a copy of the current state
-            foreach(Observer observer in observers)
+            lock (myLock)
             {
-                observer.Update(MemberwiseClone() as Subject);
+                // This could be a pointer but this is a copy of the current state
+                foreach(Observer observer in observers)
+                {
+                    observer.Update(MemberwiseClone() as Subject);
+                }
             }
         }
     }
