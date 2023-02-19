@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+[assembly: InternalsVisibleTo("RaceTrackerUnitTests")]
 
 namespace RaceTracker
 {
@@ -10,6 +12,7 @@ namespace RaceTracker
     {
         private Dictionary<int, Racer> Racers = new Dictionary<int, Racer>();
         private Dictionary<int, RaceGroup> Groups = new Dictionary<int, RaceGroup>();
+        private Dictionary<int, int> Sensors = new Dictionary<int, int>(); 
         public Tracker()
         {
             List<List<string>> groupsData = CSVParser.ParseCSV("Groups.csv");
@@ -25,7 +28,14 @@ namespace RaceTracker
             {
                 Racers.Add(Convert.ToInt32(racer[2]), new Racer(racer[0], racer[1], Convert.ToInt32(racer[2]), Groups[Convert.ToInt32(racer[3])]));
             }
-            
+
+            List<List<string>> sensorData = CSVParser.ParseCSV("Sensors.csv");
+            // Sensor number  is the mile key
+            foreach (List<string> sensor in sensorData)
+            {
+                Sensors.Add(Convert.ToInt32(sensor[0]), Convert.ToInt32(sensor[1]));
+            }
+
         } 
 
         public void UpdateRacer(int BIB, int position, int time)

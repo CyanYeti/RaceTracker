@@ -4,15 +4,17 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+[assembly: InternalsVisibleTo("RaceTrackerUnitTests")]
 
 namespace RaceTracker
 {
     internal partial class RacerObserver : Form, Observer
     {
-        private readonly Dictionary<int, Racer> RacersWatched = new Dictionary<int, Racer>();
+        internal readonly Dictionary<int, Racer> RacersWatched = new Dictionary<int, Racer>();
         private bool RefreshNeeded;
         private readonly Timer refreshTimer = new Timer();
         public int RefreshFrequency { get; set; }
@@ -81,7 +83,6 @@ namespace RaceTracker
         public void Subscribe(Subject subject)
         {
             Racer racer = subject as Racer;
-            Console.WriteLine(racer.BIB);
             lock (myLock)
             {
                 racer.Subscribe(this);

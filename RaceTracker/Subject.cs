@@ -2,16 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("RaceTrackerUnitTests")]
 namespace RaceTracker
 {
     internal class Subject
     {
         // Trey: Here is the parent subject class for observable classes
         // After struggling for a while I used a very similar structure to the BouncingBall
-        private List<Observer> observers = new List<Observer>();
+        internal List<Observer> observers = new List<Observer>();
         private readonly object myLock = new object();
         public void Subscribe(Observer observer)
         {

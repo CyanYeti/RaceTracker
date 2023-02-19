@@ -39,10 +39,6 @@ namespace RaceTracker
             Notify();
         }
 
-        public override string ToString()
-        {
-            return String.Format("{0}: {1} {2}", BIB, FirstName, LastName);
-        }
         public RaceGroup getRaceGroup() { return RacerGroup; }
     }
 }
