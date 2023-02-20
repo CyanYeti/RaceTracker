@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 namespace RaceTracker
 {
+    // Trey: Here is the racer observer wich watches the selected racers and displays their current status.
     internal partial class RacerObserver : Form, Observer
     {
         internal readonly Dictionary<int, Racer> RacersWatched = new Dictionary<int, Racer>();
@@ -66,6 +67,7 @@ namespace RaceTracker
             }
         }
 
+        // Trey: Here are the implementations of the observer functions
         public void Update(Subject subject)
         {
             Racer racer = subject as Racer;

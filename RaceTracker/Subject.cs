@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("RaceTrackerUnitTests")]
 namespace RaceTracker
 {
-    internal class Subject
+    // Trey: This is where the subject implementation is
+    internal abstract class Subject
     {
         // Trey: Here is the parent subject class for observable classes
         // After struggling for a while I used a very similar structure to the BouncingBall
@@ -40,6 +41,7 @@ namespace RaceTracker
                 observers.Clear();
             }
         }
+        // Trey: Notify is the big function, when we call it for each observer, we pass them our state and let them do what they wan
         public void Notify()
         {
             lock (myLock)

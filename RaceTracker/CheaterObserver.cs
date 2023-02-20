@@ -24,6 +24,7 @@ namespace RaceTracker
 
         public string ObserverName { get; }
 
+        // Trey: CheaterObserver is the observer that watches the cheating computer and checks if a racer it cares about is cheating.
         public CheaterObserver(string name)
         {
             InitializeComponent();
@@ -84,6 +85,7 @@ namespace RaceTracker
             }
         }
 
+        // Trey: Here is where the update function is implemented when cheating computer calls Notifies.
         // Check if any of the racers we care about are in the cheating computers new state
         public void Update(Subject subject)
         {
@@ -134,13 +136,27 @@ namespace RaceTracker
             RefreshNeeded = true;
         }
 
+        // We dont subscribe to the racer as well, just info from the cheating computer
         public void AddRacerToWatch(Racer racer)
         {
-            RacersWatched.Add(racer.BIB, racer);
+            lock (mylock)
+            {
+                if (!RacersWatched.ContainsKey(racer.BIB))
+                {
+                    RacersWatched.Add(racer.BIB, racer);
+                }
+            }
+            
         }
         public void RemoveRacerToWatch(Racer racer)
         {
-            RacersWatched.Remove(racer.BIB);
+            lock (mylock)
+            {
+                if (RacersWatched.ContainsKey(racer.BIB))
+                {
+                    RacersWatched.Remove(racer.BIB);
+                }
+            }
         }
 
         public List<Subject> GetSubjects()

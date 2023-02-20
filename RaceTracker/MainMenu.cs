@@ -16,17 +16,45 @@ namespace RaceTracker
 {
     public partial class MainMenu : Form
     {
+        // A concurrent queue gets the messages from the receiver for us to process.
         internal static ConcurrentQueue<RacerStatus> messageQueue = new ConcurrentQueue<RacerStatus>();
         private DataReceiver receiver;
 
+        // Trey: MainMenu keeps all the observer forms here
         private Dictionary<string, RacerObserver> RacerWindows = new Dictionary<string, RacerObserver>();
         private Dictionary<string, CheaterObserver> CheaterWindows = new Dictionary<string, CheaterObserver>();
-        private CheatingComputer CheaterComputer = new CheatingComputer();
         private Observer SelectedObserver;
-        
+
+        private CheatingComputer CheaterComputer;
+
+        // Internal only for testing
+        internal readonly Tracker State;
+
+
         public MainMenu()
         {
             InitializeComponent();
+
+            // Get the state using provide files or the defualts.
+            string racersFilePath = "";
+            string sensorsFilePath = "";
+            string groupsFilePath = "";
+            using (FileSelect fileSelect = new FileSelect(racersFilePath, sensorsFilePath, groupsFilePath))
+            {
+                var paths = fileSelect.ShowDialog();
+                if (paths == DialogResult.OK)
+                {
+                    racersFilePath = fileSelect.FinalRacerPath;
+                    sensorsFilePath = fileSelect.FinalSensorPath;
+                    groupsFilePath = fileSelect.FinalGroupPath;
+                }
+            }
+
+            // Get initial state from csvs and start cheating computer
+            State = new Tracker(racersFilePath, sensorsFilePath, groupsFilePath);
+
+            CheaterComputer = new CheatingComputer(State);
+
 
             // PUll in all racers into select box
             ColumnHeader bibHeader = new ColumnHeader();
@@ -35,7 +63,7 @@ namespace RaceTracker
             ColumnHeader nameHeader = new ColumnHeader();
             nameHeader.Text = "Name";
             this.lvAllRacers.Columns.Add(nameHeader);
-            foreach (KeyValuePair<int, Racer> racer in Program.State.GetRacers() )
+            foreach (KeyValuePair<int, Racer> racer in State.GetRacers() )
             {
                 ListViewItem lvi = new ListViewItem(racer.Value.BIB.ToString());
                 lvi.SubItems.Add(racer.Value.FirstName + " " + racer.Value.LastName);
@@ -43,7 +71,7 @@ namespace RaceTracker
                 this.lvAllRacers.View = View.Details;
             }
 
-            
+            // Headers for the subscribed racers
             ColumnHeader bibHeaderSubscribed = new ColumnHeader();
             bibHeader.Text = "BIB";
             this.lvSubscribedRacers.Columns.Add(bibHeaderSubscribed);
@@ -97,7 +125,7 @@ namespace RaceTracker
             string mainComputer = "MainComputer";
 
             CheaterObserver form = new CheaterObserver(mainComputer);
-            foreach (KeyValuePair<int, Racer> racer in Program.State.GetRacers())
+            foreach (KeyValuePair<int, Racer> racer in State.GetRacers())
             {
                 form.AddRacerToWatch(racer.Value);
             }
@@ -108,30 +136,20 @@ namespace RaceTracker
             CheaterWindows[mainComputer].Show();
 
 
-
-            // For now just read a line from the console 
-            //string tmp = Console.ReadLine();
             // Start reading messages
 
             StartMessageTimer();
 
         }
 
-        
+        // Dequeue messages checks for new messages from the receiver
         private void dequeueMessages()
         {
             RacerStatus statusMessage;
             while (messageQueue.TryDequeue(out statusMessage))
             {
-                Program.State.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
+                State.UpdateRacer(statusMessage.RacerBibNumber, statusMessage.SensorId, statusMessage.Timestamp);
             }
-        }
-
-        
-
-        private int getBIB(string racer)
-        {
-            return Convert.ToInt32(racer.Split(':')[0]);
         }
 
 
@@ -172,12 +190,14 @@ namespace RaceTracker
             }
         }
 
+        // On close we make sure the receiver is stopped
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
             receiver.Stop();
         }
 
+        // Timer thread for checking for messages
         private int ReadMessageFrequency;
         private System.Windows.Forms.Timer MessageTimer = new System.Windows.Forms.Timer();
 
@@ -209,6 +229,8 @@ namespace RaceTracker
 
             SelectedObserver = observer;
         }
+
+        // When we select a racer or move focus we need to make sure we have the correct observer selected
         private void lvCreatedCheaters_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(this.lvCreatedCheaters.SelectedItems.Count == 0) return;
@@ -231,23 +253,21 @@ namespace RaceTracker
             SelectObserver(RacerWindows[this.lvRacerObservers.SelectedItems[0].Text]);
         }
 
-
+        // On subscribe button, subscribe racer to the selected observer
+        // Trey: Here is where the observer are subscribed to the selected racers
         private void btnSubscribeRacer_Click(object sender, EventArgs e)
         {
             if(SelectedObserver == null) return;
             foreach(ListViewItem racer in this.lvAllRacers.SelectedItems)
             {
-                Console.WriteLine(SelectedObserver.ObserverName);
                 if (CheaterWindows.ContainsKey(SelectedObserver.ObserverName))
                 {
-                    CheaterWindows[SelectedObserver.ObserverName].AddRacerToWatch(Program.State.GetRacer(Convert.ToInt32(racer.Text)));
+                    CheaterWindows[SelectedObserver.ObserverName].AddRacerToWatch(State.GetRacer(Convert.ToInt32(racer.Text)));
                 }
                 else if (RacerWindows.ContainsKey(SelectedObserver.ObserverName))
                 {
-                    Console.WriteLine("Here");
-                    RacerWindows[SelectedObserver.ObserverName].Subscribe(Program.State.GetRacer(Convert.ToInt32(racer.Text)));
+                    RacerWindows[SelectedObserver.ObserverName].Subscribe(State.GetRacer(Convert.ToInt32(racer.Text)));
                 }
-                    Console.WriteLine("display");
                 this.lvSubscribedRacers.Items.Add(racer.Clone() as ListViewItem);
             }
         }
@@ -259,11 +279,11 @@ namespace RaceTracker
             {
                 if (CheaterWindows.ContainsKey(SelectedObserver.ObserverName))
                 {
-                    CheaterWindows[SelectedObserver.ObserverName].RemoveRacerToWatch(Program.State.GetRacer(Convert.ToInt32(racer.Text)));
+                    CheaterWindows[SelectedObserver.ObserverName].RemoveRacerToWatch(State.GetRacer(Convert.ToInt32(racer.Text)));
                 }
                 else if (RacerWindows.ContainsKey(SelectedObserver.ObserverName))
                 {
-                    RacerWindows[SelectedObserver.ObserverName].Unsubscribe(Program.State.GetRacer(Convert.ToInt32(racer.Text)));
+                    RacerWindows[SelectedObserver.ObserverName].Unsubscribe(State.GetRacer(Convert.ToInt32(racer.Text)));
                 }
                 this.lvSubscribedRacers.Items.Remove(racer);
             }

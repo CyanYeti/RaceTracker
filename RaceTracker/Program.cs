@@ -12,12 +12,11 @@ namespace RaceTracker
         // One master list of Racers. Only thing that changes any data in this is when a message comes in and updates a racer
         // This is not to allow observers to directly access racers, they only receive a Notify from from the UpdateRacer in the 
         // This is needed so that when a RacerObserver or the CheatingComputer subscribe to a racer they subscribe to the same object
-        internal static readonly Tracker State = new Tracker();
 
         [STAThread]
         static void Main()
         {
-
+            // MainMenu handles everything
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainMenu());
@@ -26,8 +25,3 @@ namespace RaceTracker
 
     }
 }
-
-/* TODO:
- * Test
- * UML
- */

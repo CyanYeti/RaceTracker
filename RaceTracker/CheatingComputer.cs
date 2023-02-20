@@ -17,12 +17,15 @@ namespace RaceTracker
 
         private List<Racer> RacersWatched = new List<Racer>();
 
+        private Tracker State;
+
         string Observer.ObserverName => "Main Cheating Computer";
 
-        public CheatingComputer()
+        public CheatingComputer(Tracker state)
         {
+            State = state;
             // For every racer, subscribe to them
-            foreach (KeyValuePair<int, Racer> racer in Program.State.GetRacers())
+            foreach (KeyValuePair<int, Racer> racer in State.GetRacers())
             {
                 Subscribe(racer.Value);
             }
@@ -42,7 +45,7 @@ namespace RaceTracker
             Racer racer = subject as Racer;
 
             // Test if they are cheating
-            foreach (KeyValuePair<int, Racer> otherRacer in Program.State.GetRacers())
+            foreach (KeyValuePair<int, Racer> otherRacer in State.GetRacers())
             {
                 // If this is the first sensor for either racer, we don't have the data to know
                 if (racer.Sensor == 0 || otherRacer.Value.Sensor== 0) { continue; }

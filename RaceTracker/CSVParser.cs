@@ -11,6 +11,7 @@ namespace RaceTracker
     {
         public static List<List<string>> ParseCSV(string file)
         {
+            Console.WriteLine(file);
             using(StreamReader sr = new StreamReader(file))
             {
                 List<List<string>>  data = new List<List<string>>();
